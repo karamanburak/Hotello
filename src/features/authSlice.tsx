@@ -24,12 +24,18 @@ const authSlice = createSlice({
             state.loading = false;
             state.currentUser = payload?.user;
             state.bearer = payload?.access;
-
         },
-
         updateUserSuccess: (state, { payload }) => {
             state.loading = false;
             state.currentUser = payload.new
+        },
+        forgotPasswordSuccess: (state) => {
+            state.loading = false;
+            state.error = false;
+        },
+        resetPasswordSuccess: (state) => {
+            state.loading = false;
+            state.error = false;
         },
         logoutSuccess: (state) => {
             state.loading = false;
@@ -48,6 +54,8 @@ export const {
     registerSuccess,
     loginSuccess,
     updateUserSuccess,
+    forgotPasswordSuccess,
+    resetPasswordSuccess,
     logoutSuccess,
     fetchFail,
 } = authSlice.actions;
