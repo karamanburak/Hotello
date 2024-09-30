@@ -4,11 +4,11 @@ import RegisterForm from '../components/auth/RegisterForm';
 const Register = () => {
     return (
         <>
-            <div className='sm:flex justify-between items-stretch py-8 px-4 lg:px-20 bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text font-nunito gap-6 xl:gap-0'>
-                <div className='hidden md:block w-1/2 h-full md:h-auto xl:w-[40vw]'>
+            <div className='sm:flex justify-evenly items-stretch py-8 px-4 lg:px-20 font-nunito'>
+                <div className='hidden md:block w-1/2 3xl:h-[60vh] xl:w-[40vw]'>
                     <img src={signUp} alt="sign-up image" className='w-full h-full rounded-md object-cover' />
                 </div>
-                <div className='w-full md:w-1/2 flex items-center'>
+                <div className='w-full md:w-1/2 my-auto'>
                     <RegisterForm />
                 </div>
             </div>
