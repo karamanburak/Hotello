@@ -7,7 +7,7 @@ const useAxios = () => {
     const { bearer } = useSelector((state: RootState) => state.auth)
 
     const axiosWithToken = axios.create({
-        baseURL: import.meta.env.VITE_BACKEND_URL,
+        baseURL: import.meta.env.VITE_BASE_URL,
         headers: { "Authorization": `Bearer ${bearer?.access}` }
     });
     return axiosWithToken

@@ -1,6 +1,7 @@
+import React from "react";
 
-const Rooms = () => {
-    return <div>Rooms</div>;
+const Room = () => {
+    return <div>Room</div>;
 };
 
-export default Rooms;
+export default Room;

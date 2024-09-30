@@ -1,5 +1,4 @@
 // Auth
-
 interface IUser {
   username: string;
   firstName: string;
