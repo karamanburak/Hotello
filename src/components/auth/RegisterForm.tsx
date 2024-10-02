@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { schema, type Schema } from "../../types/schema";
+import { registerSchema, RegisterSchema } from "../../types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
@@ -16,7 +16,7 @@ type FieldConfig = {
     type: string;
 };
 
-const initialValues: Schema = {
+const initialValues: RegisterSchema = {
     username: "",
     firstName: "",
     lastName: "",
@@ -38,13 +38,13 @@ const RegisterForm: React.FC = () => {
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm<Schema>({
+    } = useForm<RegisterSchema>({
         mode: 'all',
-        resolver: zodResolver(schema),
+        resolver: zodResolver(registerSchema),
         defaultValues: initialValues
     });
 
-    const onSubmit = async (data: Schema) => {
+    const onSubmit = async (data: RegisterSchema) => {
         try {
             await registerUser(data)
         } catch (error) {
@@ -147,7 +147,7 @@ const RegisterForm: React.FC = () => {
                                         onClick={togglePasswordVisibility}
                                         className="p-2 absolute right-0"
                                     >
-                                        {passwordType ? <MdVisibility /> : <MdVisibilityOff />}
+                                        {passwordType === 'password' ? <MdVisibilityOff /> : <MdVisibility />}
                                     </button>
                                 )}
                                 {field.name === "confirmPassword" && (
@@ -156,7 +156,7 @@ const RegisterForm: React.FC = () => {
                                         onClick={toggleConfirmPasswordVisibility}
                                         className="p-2 absolute right-0"
                                     >
-                                        {confirmPasswordType ? <MdVisibility /> : <MdVisibilityOff />}
+                                        {confirmPasswordType === "password" ? <MdVisibilityOff /> : <MdVisibility />}
                                     </button>
                                 )}
                             </div>
@@ -179,7 +179,7 @@ const RegisterForm: React.FC = () => {
                 {errors.terms && <p className="text-red-500">{errors.terms.message}</p>}
 
                 <TermsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <button onClick={() => setIsModalOpen(false)} className="mt-4 bg-blue-500 text-white rounded-md px-4 py-2">
+                    <button onClick={() => setIsModalOpen(false)} className="mt-4 bg-red-500 text-white rounded-md px-4 py-2">
                         Close
                     </button>
                 </TermsModal>

@@ -1,14 +1,15 @@
 import axios from "axios";
-import { useSelector } from "react-redux"
-import { RootState } from "../app/store"
 
+export const axiosWithPublic = axios.create({
+    baseURL: import.meta.env.VITE_BASE_URL,
+});
 
 const useAxios = () => {
-    const { bearer } = useSelector((state: RootState) => state.auth)
+    const token = localStorage.getItem("token");
 
     const axiosWithToken = axios.create({
         baseURL: import.meta.env.VITE_BASE_URL,
-        headers: { "Authorization": `Bearer ${bearer?.access}` }
+        headers: { "Authorization": `Bearer ${token}` }
     });
     return axiosWithToken
 };

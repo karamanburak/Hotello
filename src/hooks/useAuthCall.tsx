@@ -3,7 +3,8 @@ import { fetchFail, forgotPasswordSuccess, loginSuccess, logoutSuccess, register
 import axios from "axios";
 import { handleError, handleSuccess } from "../helpers/swal";
 import { useNavigate } from "react-router-dom";
-
+import { axiosWithPublic } from "./useAxios";
+import { jwtDecode } from "jwt-decode";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
@@ -11,29 +12,43 @@ const useAuthCall = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
+
     // Register User
-    const register = async (userInfo: IUser) => {
+    const register = async (userInfo: object) => {
         dispatch(startLoading())
         try {
-            const { data } = await axios.post(`${BASE_URL}/users/`, userInfo)
+            const { data } = await axiosWithPublic.post(`${BASE_URL}/users/`, userInfo)
             console.log(data);
             dispatch(registerSuccess(data.data))
             handleSuccess("Register was successful! You are being redirected to the homepage.")
             navigate("/")
         } catch (error) {
             dispatch(fetchFail())
-            handleError("Register can not be performed")
-            console.log(error);
+            if (axios.isAxiosError(error)) {
+                handleError(error.response?.data.message || "An unexpected error occurred.");
+            } else {
+                handleError("An unexpected error occurred.");
+            } console.log(error);
         }
     };
-    // Login User
-    const login = async (userInfo: IUser) => {
+    // Login Users
+    const login = async (userInfo: object) => {
         dispatch(startLoading())
         try {
-            const { data } = await axios.post(`${BASE_URL}auth/login`, userInfo);
-            // console.log(data);
+            console.log("Logging in with URL:", `${BASE_URL}/auth/login`, "and userInfo:", userInfo); // Add logging here
+            const { data } = await axiosWithPublic.post(`${BASE_URL}/auth/login`, userInfo);
+            console.log("Response data:", data);
+
+            if (data?.bearer?.access) {
+                const decodedToken = jwtDecode(data.bearer.access); // Decode the JWT token
+                console.log(decodedToken); // Log the decoded token to inspect its claims
+                localStorage.setItem("token", data.bearer.access);
+                localStorage.setItem("refreshToken", data.bearer.refresh);
+            }
+
             dispatch(loginSuccess(data))
             handleSuccess(`Hello ${data.user.username}! Welcome back! Explore our latest offers and enjoy an unforgettable stay with us!`)
+            navigate("/");
         } catch (error) {
             handleError("Login could not be completed.Please check your credentials or contact our support team for assistance.")
             console.log(error);
@@ -43,7 +58,7 @@ const useAuthCall = () => {
     const forgotPassword = async (email: string) => {
         dispatch(startLoading());
         try {
-            const { data } = await axios.post(`${BASE_URL}/auth/forgot-password`, { email });
+            const { data } = await axiosWithPublic.post(`${BASE_URL}/auth/forgot-password`, { email });
             console.log(data);
             dispatch(forgotPasswordSuccess(data))
             handleSuccess("A password reset link has been sent to your email.");
@@ -57,7 +72,7 @@ const useAuthCall = () => {
     const resetPassword = async (token: string, newPassword: string) => {
         dispatch(startLoading());
         try {
-            const { data } = await axios.post(`${BASE_URL}/auth/reset-password`, { token, newPassword });
+            const { data } = await axiosWithPublic.post(`${BASE_URL}/auth/reset-password`, { token, newPassword });
             console.log(data);
             dispatch(resetPasswordSuccess(data));
             handleSuccess("Password reset successful. You can now log in with your new password.");

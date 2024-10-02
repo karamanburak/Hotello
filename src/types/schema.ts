@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { patterns } from "./constants";
 
-export const schema = z
+export const registerSchema = z
   .object({
     username: z
       .string()
@@ -42,4 +42,22 @@ export const schema = z
     path: ["confirmPassword"],
   });
 
-export type Schema = z.infer<typeof schema>;
+export type RegisterSchema = z.infer<typeof registerSchema>;
+
+export const loginSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, { message: "Email is required" })
+    .refine((text) => patterns.email.test(text), {
+      message: "Email not valid",
+    }),
+  password: z
+    .string()
+    .min(8, { message: "Password is required" })
+    .refine((text) => patterns.password.test(text), {
+      message: "Password is not correct",
+    }),
+});
+
+export type LoginSchema = z.infer<typeof loginSchema>;
