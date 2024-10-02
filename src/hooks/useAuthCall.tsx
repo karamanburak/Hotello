@@ -18,9 +18,8 @@ const useAuthCall = () => {
             const { data } = await axios.post(`${BASE_URL}/users/`, userInfo)
             console.log(data);
             dispatch(registerSuccess(data.data))
-            handleSuccess("Register was successfully")
+            handleSuccess("Register was successful! You are being redirected to the homepage.")
             navigate("/")
-
         } catch (error) {
             dispatch(fetchFail())
             handleError("Register can not be performed")
@@ -76,7 +75,7 @@ const useAuthCall = () => {
             localStorage.removeItem("token"); // Remove JWT token
             dispatch(logoutSuccess());
             handleSuccess("You have been logged out successfully.");
-            navigate("/login");
+            navigate("/");
         } catch (error) {
             dispatch(fetchFail());
             handleError("Logout failed. Please try again.");

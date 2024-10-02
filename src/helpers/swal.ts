@@ -43,6 +43,8 @@ export const handleSuccess = (msg?: string) => {
     text: msg,
     icon: "success",
     confirmButtonText: "OK",
+    timer: 3000,
+    timerProgressBar: true,
   });
 };
 
@@ -52,6 +54,8 @@ export const handleError = (msg?: string) => {
     text: msg,
     icon: "error",
     confirmButtonText: "Try Again",
+    timer: 3000,
+    timerProgressBar: true,
   });
 };
 export const handleWarn = (msg?: string) => {
@@ -60,5 +64,7 @@ export const handleWarn = (msg?: string) => {
     text: msg || "This action might have consequences!",
     icon: "warning",
     confirmButtonText: "OK",
+    timer: 3000,
+    timerProgressBar: true,
   });
 };

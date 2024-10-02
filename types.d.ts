@@ -3,12 +3,10 @@ interface IUser {
   username: string;
   firstName: string;
   lastName: string;
-  password: string;
   email: string;
-  avatar: string;
-  isActive: boolean;
-  isStaff: boolean;
-  isAdmin: boolean;
+  password: string;
+  confirmPassword: string;
+  terms: boolean;
 }
 
 interface IBearer {
@@ -21,4 +19,11 @@ interface IAuthState {
   loading: boolean;
   error: boolean;
   bearer: IBearer | null;
+}
+
+// Terms Modal Type
+interface ITermsModal {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
 }

@@ -27,7 +27,11 @@ export const schema = z
       }),
     password: z
       .string()
-      .min(6, { message: "Password must be at least 6 characters long" }),
+      .min(8, { message: "Password is required" })
+      .refine((text) => patterns.password.test(text), {
+        message:
+          "Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, one number, and one special character",
+      }),
     confirmPassword: z.string(),
     terms: z.boolean().refine((val) => val === true, {
       message: "You must accept the terms and privacy policy",
