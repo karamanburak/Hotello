@@ -21,6 +21,15 @@ interface IAuthState {
   bearer: IBearer | null;
 }
 
+interface IJwtPayload {
+  _id: string;
+  username: string;
+  email: string;
+  isActive: boolean;
+  isAdmin: boolean;
+  exp: number;
+}
+
 // Terms Modal Type
 interface ITermsModal {
   isOpen: boolean;

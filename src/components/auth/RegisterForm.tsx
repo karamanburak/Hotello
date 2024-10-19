@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md"
+import { FaExternalLinkAlt } from "react-icons/fa";
 import useAuthCall from "../../hooks/useAuthCall";
 import TermsModal from "./TermsModal";
 
@@ -37,7 +38,7 @@ const RegisterForm: React.FC = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors, isSubmitting }
     } = useForm<RegisterSchema>({
         mode: 'all',
         resolver: zodResolver(registerSchema),
@@ -77,7 +78,7 @@ const RegisterForm: React.FC = () => {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="px-16 py-5 rounded-lg shadow-md dark:shadow-2xl"
+            className="px-16 py-5 rounded-lg shadow-md dark:bg-dark-background2"
         >
             <div className="text-2xl text-center font-bold">
                 Sign Up
@@ -147,7 +148,7 @@ const RegisterForm: React.FC = () => {
                                         onClick={togglePasswordVisibility}
                                         className="p-2 absolute right-0"
                                     >
-                                        {passwordType === 'password' ? <MdVisibilityOff /> : <MdVisibility />}
+                                        {passwordType === 'password' ? <MdVisibilityOff className="dark:text-light-textSecondary" /> : <MdVisibility className="dark:text-light-textSecondary" />}
                                     </button>
                                 )}
                                 {field.name === "confirmPassword" && (
@@ -156,7 +157,7 @@ const RegisterForm: React.FC = () => {
                                         onClick={toggleConfirmPasswordVisibility}
                                         className="p-2 absolute right-0"
                                     >
-                                        {confirmPasswordType === "password" ? <MdVisibilityOff /> : <MdVisibility />}
+                                        {confirmPasswordType === "password" ? <MdVisibilityOff className="dark:text-light-textSecondary" /> : <MdVisibility className="dark:text-light-textSecondary" />}
                                     </button>
                                 )}
                             </div>
@@ -174,7 +175,7 @@ const RegisterForm: React.FC = () => {
                         {...register("terms", { required: "You must accept the terms and privacy policy" })}
                         className="mr-2"
                     />
-                    <label className="text-sm cursor-pointer" onClick={handleTermsClick}>I agree to all the Terms and Privacy Policies</label>
+                    <label className="text-sm mr-3" >I agree to all the Terms and Privacy Policies </label><FaExternalLinkAlt onClick={handleTermsClick} className="text-sm cursor-pointer text-light-textSecondary dark:text-dark-text" />
                 </div>
                 {errors.terms && <p className="text-red-500">{errors.terms.message}</p>}
 
@@ -184,15 +185,21 @@ const RegisterForm: React.FC = () => {
                     </button>
                 </TermsModal>
 
-                <button className="bg-light-button w-full py-3 my-4 rounded-md text-dark-text">Create account</button>
+                <button
+                    className={`${isSubmitting ? 'disabled bg-gray-400' : 'bg-light-button'} w-full py-3 my-4 rounded-md text-dark-text`}
+                    disabled={isSubmitting}
+                >
+
+                    {isSubmitting ? "Loading..." : "Create account"}
+                </button>
                 <p className="text-center mb-6">Already have an account? <span className="text-red-500 cursor-pointer" onClick={() => navigate("/login")}>Login</span></p>
                 <div className="flex items-center my-4">
                     <div className="border-b-2 flex-grow border-gray-300"></div>
                     <span className="mx-4 text-gray-400">Or Sign up with</span>
                     <div className="border-b-2 flex-grow border-gray-300"></div>
                 </div>
-                <div className="border border-light-button w-[10rem] h-12 flex items-center justify-center rounded-md m-auto my-6 cursor-pointer">
-                    <FcGoogle className="text-2xl" />
+                <div className="border border-light-button w-[15rem] h-12 flex items-center justify-center rounded-md m-auto my-6 cursor-pointer text-gray-500">
+                    <FcGoogle className="text-2xl mr-3" /> Sign up with Google
                 </div>
             </div>
         </form>

@@ -5,7 +5,7 @@ const TermsModal: React.FC<ITermsModal> = ({ isOpen, children }) => {
 
   return (
     <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-50 text-black">
-      <div className="bg-white rounded-lg shadow-lg p-4 max-w-3xl w-full h-auto overflow-auto max-h-[80vh]">
+      <div className="bg-white rounded-lg shadow-lg p-4 max-w-3xl w-full h-auto overflow-auto max-h-[90vh]">
         <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
           <h1 className="text-3xl font-bold text-gray-800 mb-4">Terms of Service Hotello</h1>
           <p className=" mb-6">Last updated: 02.10.2024</p>

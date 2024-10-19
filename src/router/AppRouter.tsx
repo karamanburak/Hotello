@@ -8,6 +8,7 @@ import PrivateRouter from "./PrivateRouter";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Room from "../pages/Room";
+import VerificationEmail from "../pages/VerificationEmail";
 
 const AppRouter = () => {
     return (
@@ -19,10 +20,10 @@ const AppRouter = () => {
                 <Route path="facilities" element={<Facility />} />
                 <Route path="rooms" element={<Room />} />
                 <Route path="about" element={<About />} />
+                <Route path="auth/verify-email" element={<VerificationEmail />} />
                 <Route path="" element={<PrivateRouter />} >
                     <Route path="profile" element={<Profile />} />
                 </Route>
-
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>

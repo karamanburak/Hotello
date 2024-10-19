@@ -24,25 +24,15 @@ const LoginForm: React.FC = () => {
     const navigate = useNavigate();
     const [passwordType, setPasswordType] = useState<'password' | 'text'>('password');
 
-
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors, isSubmitting }
     } = useForm<LoginSchema>({
         mode: 'all',
         resolver: zodResolver(loginSchema),
         defaultValues: initialValues
     });
-
-    const onSubmit = async (data: LoginSchema) => {
-        try {
-            await login(data)
-        } catch (error) {
-            console.error("Login failed:", error);
-            throw error
-        }
-    };
 
     const togglePasswordVisibility = () => {
         setPasswordType((prev) => (prev === 'password' ? 'text' : 'password'));
@@ -55,10 +45,19 @@ const LoginForm: React.FC = () => {
     ];
 
 
+    const handleLogin = async (data: LoginSchema) => {
+        try {
+            await login(data);
+        } catch (error) {
+            console.error("Login failed:", error);
+        }
+    };
+
+
     return (
         <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="px-16 py-5 rounded-lg shadow-md dark:shadow-2xl"
+            onSubmit={handleSubmit(handleLogin)}
+            className="px-16 py-5 rounded-lg shadow-md  dark:bg-dark-background2"
         >
             <div className="text-2xl text-center font-bold">
                 Login
@@ -85,9 +84,9 @@ const LoginForm: React.FC = () => {
                                     <button
                                         type="button"
                                         onClick={togglePasswordVisibility}
-                                        className="p-2 absolute right-0"
+                                        className="p-2 absolute right-0 "
                                     >
-                                        {passwordType === 'password' ? <MdVisibilityOff /> : <MdVisibility />}
+                                        {passwordType === 'password' ? <MdVisibilityOff className="dark:text-light-textSecondary" /> : <MdVisibility className="dark:text-light-textSecondary" />}
                                     </button>
                                 )}
                             </div>
@@ -97,28 +96,21 @@ const LoginForm: React.FC = () => {
                         </div>
                     ))}
                 </div>
-
-                <div className="flex justify-between">
-                    <div className="flex items-center">
-                        <input
-                            type="checkbox"
-                            className="mr-2"
-                        />
-                        <label className="text-sm cursor-pointer">Remember me</label>
-                    </div>
-                    <div className="text-red-500 text-sm cursor-pointer">Forgot Password</div>
-
-                </div>
-
-                <button className="bg-light-button w-full py-3 my-4 rounded-md text-dark-text">Login</button>
+                <div className="text-red-500 text-sm cursor-pointer text-end" onClick={() => navigate("/forgot-password")}>Forgot Password</div>
+                <button
+                    className={`${isSubmitting ? 'disabled bg-gray-400' : 'bg-light-button'} w-full py-3 my-4 rounded-md text-dark-text`}
+                    disabled={isSubmitting}
+                >
+                    {isSubmitting ? "Loading..." : "Login"}
+                </button>
                 <p className="text-center mb-6">Don't have an account? <span className="text-red-500 cursor-pointer" onClick={() => navigate("/register")}>Sign up</span></p>
                 <div className="flex items-center my-4">
                     <div className="border-b-2 flex-grow border-gray-300"></div>
                     <span className="mx-4 text-gray-400">Or login with</span>
                     <div className="border-b-2 flex-grow border-gray-300"></div>
                 </div>
-                <div className="border border-light-button w-[10rem] h-12 flex items-center justify-center rounded-md m-auto my-6 cursor-pointer">
-                    <FcGoogle className="text-2xl" />
+                <div className="border border-light-button w-[10rem] h-12 flex items-center justify-center rounded-md m-auto my-6 cursor-pointer text-gray-500">
+                    <FcGoogle className="text-2xl mr-3" /> Google
                 </div>
             </div>
         </form>
