@@ -17,11 +17,13 @@ export default {
             DEFAULT: "#2563eb",
             hover: "#1e40af",
           },
+          bookingButton: "#E0B973",
         },
         // Dark Mode Colors
         dark: {
           background: "#111827",
           background2: "#161f30",
+          background3: "#1d2a44",
           primary: "#3b82f6",
           secondary: "#1f2937",
           text: "#f9fafb",

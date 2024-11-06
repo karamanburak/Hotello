@@ -9,6 +9,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Room from "../pages/Room";
 import VerificationEmail from "../pages/VerificationEmail";
+import Contact from "../pages/Contact";
 
 const AppRouter = () => {
     return (
@@ -19,6 +20,7 @@ const AppRouter = () => {
                 <Route path="register" element={<Register />} />
                 <Route path="facilities" element={<Facility />} />
                 <Route path="rooms" element={<Room />} />
+                <Route path="contact" element={<Contact />} />
                 <Route path="about" element={<About />} />
                 <Route path="auth/verify-email" element={<VerificationEmail />} />
                 <Route path="" element={<PrivateRouter />} >
