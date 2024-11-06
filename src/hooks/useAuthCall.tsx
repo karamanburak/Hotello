@@ -54,6 +54,36 @@ const useAuthCall = () => {
         }
     };
 
+    // Verify Email
+    const verifyEmail = async (verificationCode: string) => {
+        dispatch(startLoading());
+        try {
+            console.log("Payload being sent:", { code: verificationCode });
+            await axiosWithPublic.post(`${BASE_URL}/auth/verify-email`, { verificationCode });
+            console.log("Email verified successfully!");
+            handleSuccess("Email verification successful!");
+            navigate("/");
+        } catch (error) {
+            dispatch(fetchFail());
+            handleError("Email verification failed. Please try again.");
+            console.log(error);
+        }
+    };
+
+    // Resend Verification Code
+    const resendVerificationCode = async (email: string) => {
+        dispatch(startLoading());
+        try {
+            const { data } = await axiosWithPublic.post(`${BASE_URL}/auth/resend-verification-code`, { email });
+            console.log("Resend verification code response:", data);
+            handleSuccess("Verification code resent successfully!");
+        } catch (error) {
+            dispatch(fetchFail());
+            handleError("Failed to resend verification code. Please try again.");
+            console.log(error);
+        }
+    };
+
     // Refresh Access Token
     const refreshAccessToken = async () => {
         try {
@@ -112,7 +142,7 @@ const useAuthCall = () => {
         }
     };
 
-    return { register, login, refreshAccessToken, forgotPassword, resetPassword, logout };
+    return { register, login, refreshAccessToken, forgotPassword, resetPassword, logout, verifyEmail, resendVerificationCode };
 };
 
 export default useAuthCall;

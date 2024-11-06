@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdKeyboardArrowLeft } from "react-icons/md";
+import useAuthCall from "../hooks/useAuthCall";
 
 const VerificationEmail = () => {
+    const { verifyEmail } = useAuthCall()
     const [code, setCode] = useState(["", "", "", "", "", ""]);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
     const navigate = useNavigate();
@@ -30,9 +32,21 @@ const VerificationEmail = () => {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleResendCode = () => {
+        // Logic to resend the verification code goes here
+        console.log("Resending verification code...");
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const verificationCode = code.join("");
+        console.log("Verification code submitted:", verificationCode);
+        try {
+            await verifyEmail(verificationCode)
+        } catch (error) {
+            console.error("Verification failed:", error);
+
+        }
         console.log(`Verification code submitted: ${verificationCode}`);
     };
 
@@ -58,7 +72,7 @@ const VerificationEmail = () => {
                 </div>
                 <h2 className="text-2xl font-bold mb-2">Verify Code</h2>
                 <p>Enter the 6-digit code sent to your email address.</p>
-                <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+                <form onSubmit={handleSubmit} className="space-y-2 mt-6">
                     <div className="flex gap-2 sm:gap-4">
                         {code.map((digit, index) => (
                             <input
@@ -74,13 +88,23 @@ const VerificationEmail = () => {
                             />
                         ))}
                     </div>
-                    <button
-                        type="submit"
-                        className={`px-6 py-3 my-4 rounded-md text-dark-text ${isLoading ? 'bg-dark-textSecondary' : 'bg-light-button'}`}
-                        disabled={isLoading}
-                    >
-                        {isLoading ? "Verifying..." : "Verify Email"}
-                    </button>
+                    <div className="flex flex-col gap-8">
+                        <p className="text-light:textSecondary dark:text-dark:textSecondary">
+                            Didn’t receive a code?
+                            <button
+                                onClick={handleResendCode}
+                                className="text-red-500 dark:text-dark:primary font-semibold ml-1" >
+                                Resend
+                            </button>
+                        </p>
+                        <button
+                            type="submit"
+                            className={`px-6 py-3 rounded-md text-dark-text ${isLoading ? 'bg-dark-textSecondary' : 'bg-light-button'}`}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? "Verifying..." : "Verify Email"}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
